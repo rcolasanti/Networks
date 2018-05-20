@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
@@ -16,6 +17,7 @@
         </div>
         <div class="card">
             <div class="card-header">Python modules</div>
+
             <div class="card-body">
                 <p>The pip requirments text is held in piprequirments.txt </p>
                 <ul>
@@ -26,10 +28,120 @@
                 </ul>
             </div>
         </div>
+        <br>
+        <div class='card'>
+            <div class='card-header'>Outline</div>
+            <div class='card-body'>
+                <p> This project will rework some of the examples found in D.Zinoviev's book: Complex Network Analysis in Python.
+                    The code has been rework to fulfill the constraint of Simple Code .
+                </p>
+            </div>
+        </div>
+        <br>
+        <div class='card'>
+            <div class='card-header'>Simple network from nutrition data</div>
+            <div class='card-body'>
+                <pre>
+                        import networkx as nx
+                        import matplotlib.pyplot as plt
+                            
+                        graph = nx.Graph() 
+                        file = open("../LocalData/nutrients_and_food.csv",'r')
+                        for line in file:
+                            processed_line = line.strip('\n')
+                            data = processed_line.split(',')
+                            graph.add_node(data[0])
+                            graph.add_node(data[1])
+                            graph.add_edge(data[0],data[1])    
+                </pre>
+                <ul>
+                    <li>Crate a undirected graph form networkx with
+                        <span class="code">Graph()</span>
+                    </li>
+                    <li>Open the csv file</li>
+                    <li>Iterate each line of the file</li>
+                    <li>Strip the return chr</li>
+                    <li>Split the comma separated data </li>
+                    <li>Add each of the two elements as nodes</li>
+                    <li>Connect each node with an edge</li>
+                </ul>
+                <p>Code is in jupyter nore book Nutrients.ipynb in the Notebbos directory of this repository</p>
+            </div>
+        </div>
+        <br>
+
+        <div class='card'>
+            <div class='card-header'>Plot network</div>
+            <div class='card-body'>
+                <pre>
+                            plt.axis('off')
+                            nx.draw_networkx(graph,nx.spring_layout(graph))    
+                    </pre>
+                <p>Matplotlib used in conjuntion with networkx to plot network. </p>
+                <ul>
+                    <li>Turn off axis plot</li>
+                    <li>chose spring network and pass it the network</li>
+                    <li>draw the network</li>
+                </ul>
+                <img class="img-responsive" src="img/network1.png" alt="network1">
+            </div>
+        </div>
+        <br>
+
+        <div class='card'>
+            <div class='card-header'>Inclued atributes with the nodes</div>
+            <div class='card-body'>
+                <pre>
+                            nutrients = []
+                            file = open('../LocalData/nutrients.csv')
+                            for line in file:
+                                processed_line = line.strip('\n')
+                                data = processed_line.split(',')
+                                nutrients.append(data[0])                       
+                    </pre>
+                <p>Get list of nutrients from seperate csvfile</p>
+                <pre>
+                            graph_n = nx.Graph()
+                            file = open("../LocalData/nutrients_and_food.csv",'r')
+                            for line in file:
+                                processed_line = line.strip('\n')
+                                data = processed_line.split(',')
+                                graph_n.add_nodes_from([(data[0],{"nutrients": data[0] in nutrients})])
+                                graph_n.add_nodes_from([(data[1],{"nutrients": data[1] in nutrients})])
+                                graph_n.add_edge(data[0],data[1])
+                    </pre>
+                <ul>
+                    <li>Crate a undirected graph form networkx with
+                        <span class="code">Graph()</span>
+                    </li>
+                    <li>Open the csv file</li>
+                    <li>Iterate each line of the file</li>
+                    <li>Strip the return chr</li>
+                    <li>Split the comma separated data </li>
+                    <li>See if either elemt is a nutrient</li>
+                    <li>Add that data as a dictionary data. This is held as a tue by networkx </li>
+                    <li>Add each of the two elements as nodes</li>
+                    <li>Connect each node with an edge</li>
+                </ul>
+                <pre>
+                            colors = []
+                            for n in graph_n.nodes(data=True):
+                                if n[1]["nutrients"]:
+                                    colors.append("yellow")
+                                else:
+                                    colors.append("pink")                            
+                    </pre>
+                <p>Iterat through the graph nodes and set a color list</p>
+                <pre>
+                            plt.axis('off')
+                            nx.draw_networkx(graph_n,nx.spring_layout(graph_n),node_color=colors)
+                    </pre>
+                <p>Plot graph</p>
+                <img class="img-responsive" src="img/network2.png" alt="network1">
+            </div>
+        </div>
     </div>
-
-
-
+    <br>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
